@@ -15,7 +15,7 @@ public class Mastermind {
     public static int $colorAmount = 9;
     private Vector<Mastermind.COLOR> $keyCode;
 
-    public static enum COLOR {RED, ORANGE, YELLOW, GREEN, BLUE, PURPLE, PINK, WHITE, BLACK};
+    public static enum COLOR { RED, ORANGE, YELLOW, GREEN, BLUE, PURPLE, PINK, WHITE, BLACK };
 
     private final MasterStrategy $MasterStrategy;
     private final MasterMindIO $MasterIO;
@@ -45,13 +45,15 @@ public class Mastermind {
      *
      */
     private Mastermind() {
-        // get IO for amount of codes, amount of colors,
-        // IO to get strategy
         $MasterStrategy = new RandomStrategy();
         $MasterIO = new MasterMindIO();
-        //$attemptsLimit = $MasterIO.getAttempts();
     }
 
+    /**
+     * Part of the Singelton pattern to have only one Mastermind object at all time and
+     * that makes it universally accessible
+     * @return the singleton Mastermind object
+     */
     public static Mastermind getInstance() {
         if ($main == null)
             $main = new Mastermind();
@@ -73,13 +75,13 @@ public class Mastermind {
     public void playGame(Boolean codeMaker) {
         $keyCode = (codeMaker) ? $MasterIO.readAttemptInput()
                                : $MasterStrategy.generateCode();
-        System.out.print($keyCode.get(0) + " " + $keyCode.get(1) + "\n");
+        System.out.print($keyCode.get(0) + " " + $keyCode.get(1) + " " + $keyCode.get(2) + " " + $keyCode.get(3) + "\n");
         int $attemptsUsed = 0;
         while ($attemptsUsed < $attemptsLimit) {
             Vector<Mastermind.COLOR> attempt = new Vector<>();
             attempt = (codeMaker) ? $MasterStrategy.generateCode()
                                   : $MasterIO.readAttemptInput();
-            System.out.println(attempt.get(0) + " " + attempt.get(1) + "\n");
+            $MasterIO.writeAttemptOutput(attempt);
             Vector<Integer> pins = checkGivenCode(attempt);
             $MasterIO.writePinsOutput(pins);
             boolean victory = checkEndGame(pins);
@@ -107,19 +109,20 @@ public class Mastermind {
         keyPins.add(whitePins);// white pins
         return keyPins;
     }
+
     /**
      * Check a row to see how it matches with the key row
      *
-     * @param inputCode,  redPos
+     * @param inputCode, redPos
      * @return the amount of white pins
      */
     public Integer calculateWhitePins(Vector<Mastermind.COLOR> inputCode, Vector<Integer> redPos) {
         int whitePins = 0;
-        for (int x = 0; x < inputCode.size(); x++) {
+        for (int x = 0; x < $keyCode.size(); x++) {
             if (!redPos.contains(x)) {
-                for (int y = x; y < $keyCode.size(); y++) {
+                for (int y = 0; y < $keyCode.size(); y++) {
                     if (!redPos.contains(y)) {
-                        if ($keyCode.get(y) == inputCode.get(x)) {
+                        if ($keyCode.get(x) == inputCode.get(y)) {
                             whitePins += 1;
                         }
                     }
@@ -129,6 +132,8 @@ public class Mastermind {
         }
         return whitePins;
     }
+
+
     /**
      * Check a row to see how it matches with the key row
      *
@@ -148,14 +153,6 @@ public class Mastermind {
     public boolean checkEndGame(Vector<Integer> pins) {
         return pins.get(0) == $codeLength;
     }
-
-
-
-
-
-
-
-
 
 
 }

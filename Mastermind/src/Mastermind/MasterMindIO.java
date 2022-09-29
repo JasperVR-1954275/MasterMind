@@ -7,11 +7,15 @@ import java.util.Vector;
 public class MasterMindIO {
     private final Scanner s = new Scanner(System.in);
 
-    public Vector<Integer> readGameSetupInput(){
+    public Vector<Integer> readGameSetupInput() {
         Vector<Integer> input = new Vector<Integer>();
-        input.add(settingInput("Amount of colors? (Max: 9)"));
-        input.add(settingInput("Amount of tries?"));
-        input.add(settingInput("Length of code?"));
+        settingInput("Amount of colors? (Max: 9)", input);
+        while (input.get(0) > 9) {
+            input = null;
+            settingInput("Amount of colors? (Max: 9)", input);
+        }
+        settingInput("Amount of tries?", input);
+        settingInput("Length of code?", input);
         System.out.println("Would you like to play as 'codebreaker' or 'codemaker'?");
         while (true) {
             String decision = s.nextLine();
@@ -28,25 +32,19 @@ public class MasterMindIO {
         return input;
     }
 
-    private int settingInput(String text) {
-        while(true) {
+    private void settingInput(String text, Vector<Integer> input) {
+        while (true) {
             try {
                 System.out.println(text);
+                input.add(Integer.parseInt(s.nextLine()));
                 break;
-                //input.add(Integer.parseInt(s.nextLine()));
             } catch (NumberFormatException e) {
                 System.out.println("Bad input");
             }
         }
-        return Integer.parseInt(s.nextLine());
-
     }
 
     /**
-     *
-     *
-     *
-     *
      * @return
      */
     public Vector<Mastermind.COLOR> readAttemptInput() {
@@ -71,12 +69,17 @@ public class MasterMindIO {
     }
 
     public void writeUserVictoryOutput() {
-        System.out.print("Codebreaker have won!");
+        System.out.print("Codebreaker has won!");
     }
 
     public void writeComputerVictoryOutput() {
         System.out.print("Codemaker has won. You ran out of attempts!");
     }
 
-    public void writeAttemptOutput() { System.out.print("Codemaker has won. You ran out of attempts!"); }
+    public void writeAttemptOutput(Vector<Mastermind.COLOR> attempt) {
+        System.out.print("Attempt: ");
+        for (int i = 0; i < attempt.size(); i++) {
+            System.out.print(attempt.get(i) + " ");
+        }
+    }
 }
