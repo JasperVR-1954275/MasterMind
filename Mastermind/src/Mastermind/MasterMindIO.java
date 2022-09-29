@@ -71,10 +71,12 @@ public class MasterMindIO {
     }
 
     public void writeUserVictoryOutput() {
-        System.out.print("You have won!");
+        System.out.print("Codebreaker have won!");
     }
 
     public void writeComputerVictoryOutput() {
-        System.out.print("Computer has won. You ran out of attempts!");
+        System.out.print("Codemaker has won. You ran out of attempts!");
     }
+
+    public void writeAttemptOutput() { System.out.print("Codemaker has won. You ran out of attempts!"); }
 }
