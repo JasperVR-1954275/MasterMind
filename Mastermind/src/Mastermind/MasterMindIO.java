@@ -34,7 +34,7 @@ public class MasterMindIO {
                 System.out.println(text);
                 break;
                 //input.add(Integer.parseInt(s.nextLine()));
-            } catch (NumberFormatException ex) {
+            } catch (NumberFormatException e) {
                 System.out.println("Bad input");
             }
         }
@@ -52,13 +52,14 @@ public class MasterMindIO {
     public Vector<Mastermind.COLOR> readAttemptInput() {
         Vector<Mastermind.COLOR> attempt = new Vector<>();
         int amountOfColorsGiven = 0;
-        while (amountOfColorsGiven <= Mastermind.$codeLength) {
-            System.out.print("Give me a color for column: " + amountOfColorsGiven);
-            String userInput = System.console().readLine();
+        while (amountOfColorsGiven < Mastermind.$codeLength) {
+            System.out.print("Give me a color for column: " + amountOfColorsGiven + "\n");
+            String userInput = s.nextLine();
             for (int colorIndex = 0; colorIndex < Mastermind.$colorAmount; colorIndex++) {
                 if (Mastermind.COLOR.valueOf(userInput.toUpperCase()) == Mastermind.getColor(colorIndex)) {
-                    attempt.add(Mastermind.COLOR.valueOf(userInput));
+                    attempt.add(Mastermind.COLOR.valueOf(userInput.toUpperCase()));
                     amountOfColorsGiven++;
+                    break;
                 }
             }
         }
@@ -66,7 +67,7 @@ public class MasterMindIO {
     }
 
     public void writePinsOutput(Vector<Integer> pins) {
-        System.out.print("Number of red pins: " + pins.get(0) + ", number of white pins: " + pins.get(1));
+        System.out.print("Number of red pins: " + pins.get(0) + ", number of white pins: " + pins.get(1) + "\n");
     }
 
     public void writeUserVictoryOutput() {

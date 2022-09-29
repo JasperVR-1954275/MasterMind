@@ -6,9 +6,9 @@ class RandomStrategy implements MasterStrategy {
     // Return 1 row of length codeLength and every item is a random color
 
     public Vector<Mastermind.COLOR> generateCode() {
-        Vector<Mastermind.COLOR> generatedCode = null;
+        Vector<Mastermind.COLOR> generatedCode = new Vector<>();
         int colorValue;
-        for (int i =0;i< Mastermind.$codeLength;i++){
+        for (int i=0; i < Mastermind.$codeLength; i++){
             colorValue = (int)(10 * Math.random()) % Mastermind.$colorAmount;
             generatedCode.add(Mastermind.getColor(colorValue));
         }

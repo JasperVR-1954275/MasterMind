@@ -37,6 +37,7 @@ public class Mastermind {
      * @return
      */
     public static COLOR getColor(int location) {
+        Mastermind.COLOR test = COLOR.values()[location];
         return COLOR.values()[location];
     }
 
@@ -60,9 +61,9 @@ public class Mastermind {
     public void start() {
         Vector<Integer> setupInput = new Vector<>();
         setupInput = $MasterIO.readGameSetupInput();
-        $attemptsLimit = setupInput.get(0);
-        $codeLength = setupInput.get(1);
-        $colorAmount = setupInput.get(2);
+        $colorAmount = setupInput.get(0);
+        $attemptsLimit = setupInput.get(1);
+        $codeLength = setupInput.get(2);
         Mastermind.getInstance().playGame(setupInput.get(3) == 0);
     }
 
@@ -72,11 +73,13 @@ public class Mastermind {
     public void playGame(Boolean codeMaker) {
         $keyCode = (codeMaker) ? $MasterIO.readAttemptInput()
                                : $MasterStrategy.generateCode();
+        System.out.print($keyCode.get(0) + " " + $keyCode.get(1) + "\n");
         int $attemptsUsed = 0;
         while ($attemptsUsed < $attemptsLimit) {
-            Vector<Mastermind.COLOR> attempt = null;
+            Vector<Mastermind.COLOR> attempt = new Vector<>();
             attempt = (codeMaker) ? $MasterStrategy.generateCode()
                                   : $MasterIO.readAttemptInput();
+            System.out.println(attempt.get(0) + " " + attempt.get(1) + "\n");
             Vector<Integer> pins = checkGivenCode(attempt);
             $MasterIO.writePinsOutput(pins);
             boolean victory = checkEndGame(pins);
@@ -143,7 +146,7 @@ public class Mastermind {
     }
 
     public boolean checkEndGame(Vector<Integer> pins) {
-        return pins.get(0) == 4;
+        return pins.get(0) == $codeLength;
     }
 
 
