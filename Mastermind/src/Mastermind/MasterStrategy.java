@@ -18,5 +18,4 @@ public interface MasterStrategy {
      * @pre There is atleast one free row available to make a new random row
      */
     public Vector<Mastermind.COLOR> generateCode();
-    public Vector<String> checkGivenCode(Vector<Mastermind.COLOR> givenCode);
 }
