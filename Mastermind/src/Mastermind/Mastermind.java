@@ -46,6 +46,10 @@ public class Mastermind {
         //$attemptsLimit = $MasterIO.getAttempts();
     }
 
+    public void doMove(Vector<Mastermind.COLOR> row) throws InputException {
+
+    }
+
     public static Mastermind getInstance() {
         if ($main == null)
             $main = new Mastermind();
@@ -53,8 +57,16 @@ public class Mastermind {
     }
 
     public void start() {
-        $mast
+        Vector<Integer> setupInput = new Vector<Integer>();
+        setupInput = $MasterIO.readGameSetupInput();
+        $attemptsLimit = setupInput.get(0);
+        $codeLength = setupInput.get(1);
+        $colorAmount = setupInput.get(2);
+        if (setupInput.get(3) == 0) {
+            Mastermind.getInstance().playCodeMaker();
+        } else {
+            Mastermind.getInstance().playCodeBreaker();
+        }
     }
-
 
 }

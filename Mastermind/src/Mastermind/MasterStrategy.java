@@ -12,11 +12,11 @@ public interface MasterStrategy {
     /* Make a single move as maker or continues moves as breaker */
 
     /**
-     * Generate a row of length Mastermind.$codeLength
-     * Every element
-     *
-     * @return
+     * Generate a random new row which can be used as computer maker row
+     * or a new guess from the computer breaker
+     * @return A row of length $codeLength where every element is a random color from Mastermind.COLOR
+     * @pre There is atleast one free row available to make a new random row
      */
     public Vector<Mastermind.COLOR> generateCode();
-    public Vector<>
+    public Vector<String> checkGivenCode(Vector<Mastermind.COLOR> givenCode);
 }

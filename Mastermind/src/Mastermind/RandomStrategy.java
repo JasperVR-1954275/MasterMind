@@ -18,6 +18,18 @@ class RandomStrategy implements MasterStrategy {
         }
         return generatedCode;
     }
+    public Vector<String> checkGivenCode(Vector<Mastermind.COLOR> givenCode){
+        Vector<Integer>  
+        for (int i =0; i < generatedCode.size(); i++){
+            if(generatedCode.get(i) == givenCode.get(i)){
+
+            }
+            for (int j = 0; j < givenCode.size();j++){
+
+            }
+
+        }
+    }
 }
 
 /*
