@@ -11,15 +11,13 @@ public class Mastermind {
 
     private static Mastermind $main;
     private static int $attemptsLimit = 12;
-    private static int $attemptsUsed = 0;
     public static int $codeLength = 4;
-    public static int $colorAmount = 8;
+    public static int $colorAmount = 9;
     private Vector<Mastermind.COLOR> $keyCode;
 
     public static enum COLOR {RED, ORANGE, YELLOW, GREEN, BLUE, PURPLE, PINK, WHITE, BLACK};
 
     private final MasterStrategy $MasterStrategy;
-    //private RandomStrategy $RandomStrategy;
     private final MasterMindIO $MasterIO;
 
     /**
@@ -35,7 +33,6 @@ public class Mastermind {
     }
 
     /**
-     *
      * @param location
      * @return
      */
@@ -66,69 +63,61 @@ public class Mastermind {
         $attemptsLimit = setupInput.get(0);
         $codeLength = setupInput.get(1);
         $colorAmount = setupInput.get(2);
-        if (setupInput.get(3) == 0) {
-            Mastermind.getInstance().playCodeMaker();
-        } else {
-            Mastermind.getInstance().playCodeBreaker();
-        }
+        Mastermind.getInstance().playGame(setupInput.get(3) == 0);
     }
 
     /**
      *
      */
-    public void playCodeMaker() {
-        $keyCode = $MasterIO.readAttemptInput();
+    public void playGame(Boolean codeMaker) {
+        $keyCode = (codeMaker) ? $MasterIO.readAttemptInput()
+                               : $MasterStrategy.generateCode();
+        int $attemptsUsed = 0;
         while ($attemptsUsed < $attemptsLimit) {
-            Vector<Mastermind.COLOR> computerAttempt = $MasterStrategy.generateCode();
-            Vector<Integer> pins = checkGivenCode(computerAttempt);
-            $MasterIO.writePinsOutput(pins);
-            boolean victory = checkEndGame(pins);
-            if (victory) {
-                System.out.print("You have won!");
-                return;
-            }
-            $attemptsUsed++;
-        }
-    }
-
-    public void playCodeBreaker(){
-        $keyCode = $MasterStrategy.generateCode();
-        while ($attemptsUsed < $attemptsLimit) {
-            Vector<Mastermind.COLOR> attempt = $MasterIO.readAttemptInput();
+            Vector<Mastermind.COLOR> attempt = null;
+            attempt = (codeMaker) ? $MasterStrategy.generateCode()
+                                  : $MasterIO.readAttemptInput();
             Vector<Integer> pins = checkGivenCode(attempt);
             $MasterIO.writePinsOutput(pins);
             boolean victory = checkEndGame(pins);
             if (victory) {
-                System.out.print("You have won!");
+                $MasterIO.writeUserVictoryOutput();
                 return;
             }
             $attemptsUsed++;
         }
-        System.out.print("Computer has won since you did not guess the word in time!");
-        //Vector<Mastermind.COLOR> row
+        $MasterIO.writeComputerVictoryOutput();
     }
+
     /**
      * Check a row to see how it matches with the key row
+     *
      * @param inputCode
-     * @return
+     * @return the amount of red and white pins
      */
-    public Vector<Integer> checkGivenCode(Vector<Mastermind.COLOR> inputCode){
-        Vector<Integer> keyPins = null;
+    public Vector<Integer> checkGivenCode(Vector<Mastermind.COLOR> inputCode) {
+        Vector<Integer> keyPins = new Vector<>();
         Vector<Integer> redPos = calculateRedPins(inputCode);
         int redPins = redPos.size();
-        int whitePins = calculateWhitePins(inputCode,redPos);
+        int whitePins = calculateWhitePins(inputCode, redPos);
         keyPins.add(redPins);// red pins
         keyPins.add(whitePins);// white pins
         return keyPins;
     }
-    public Integer calculateWhitePins(Vector<Mastermind.COLOR> inputCode, Vector<Integer> redPos){
+    /**
+     * Check a row to see how it matches with the key row
+     *
+     * @param inputCode,  redPos
+     * @return the amount of white pins
+     */
+    public Integer calculateWhitePins(Vector<Mastermind.COLOR> inputCode, Vector<Integer> redPos) {
         int whitePins = 0;
-        for(int x =0; x < inputCode.size();x++){
-            if (!redPos.contains(x)){
-                for (int y = x; y < $keyCode.size(); y++){
-                    if(!redPos.contains(y)){
-                        if($keyCode.get(y) == inputCode.get(x)){
-                            whitePins +=1;
+        for (int x = 0; x < inputCode.size(); x++) {
+            if (!redPos.contains(x)) {
+                for (int y = x; y < $keyCode.size(); y++) {
+                    if (!redPos.contains(y)) {
+                        if ($keyCode.get(y) == inputCode.get(x)) {
+                            whitePins += 1;
                         }
                     }
                 }
@@ -137,19 +126,25 @@ public class Mastermind {
         }
         return whitePins;
     }
-    public  Vector<Integer> calculateRedPins(Vector<Mastermind.COLOR> inputCode){
-        Vector<Integer> redPos = null;
-        for (int i =0; i < $keyCode.size(); i++){
-            if($keyCode.get(i) == inputCode.get(i)){
+    /**
+     * Check a row to see how it matches with the key row
+     *
+     * @param inputCode
+     * @return the positions of the pins in inputcode and keycode that have the same color
+     */
+    public Vector<Integer> calculateRedPins(Vector<Mastermind.COLOR> inputCode) {
+        Vector<Integer> redPos = new Vector<>();
+        for (int i = 0; i < $keyCode.size(); i++) {
+            if ($keyCode.get(i) == inputCode.get(i)) {
                 redPos.add(i);
             }
         }
         return redPos;
     }
+
     public boolean checkEndGame(Vector<Integer> pins) {
         return pins.get(0) == 4;
     }
-
 
 
 }
