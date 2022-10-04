@@ -3,15 +3,28 @@ package Mastermind;
 import java.util.Scanner;
 import java.util.Vector;
 
-
+/**
+ * Handles all input/output
+ * @author Group 2
+ */
 public class MasterMindIO {
+
     private final Scanner s = new Scanner(System.in);
 
+    /**
+     * Reads input for the setup of the game.
+     * @return vector of the input the user gave.
+     * [0]: Amount of colors.
+     * [1]: Amount of tries the codebreaker gets.
+     * [2]: The length of the code.
+     * [3]: 0 if the player wants to be the codemaker, and 1 if the player wants to be the codebreaker.
+     * @post all the setup input is read
+     */
     public Vector<Integer> readGameSetupInput() {
-        Vector<Integer> input = new Vector<Integer>();
+        Vector<Integer> input = new Vector<>();
         settingInput("Amount of colors? (Max: 9)", input);
-        while (input.get(0) > 9) {
-            input = null;
+        while (input.get(0) > 9 || input.get(0) <= 0) {
+            input = new Vector<>();
             settingInput("Amount of colors? (Max: 9)", input);
         }
         settingInput("Amount of tries?", input);
@@ -19,19 +32,24 @@ public class MasterMindIO {
         System.out.println("Would you like to play as 'codebreaker' or 'codemaker'?");
         while (true) {
             String decision = s.nextLine();
-            if (decision.toLowerCase().equals("codemaker")) {
+            if (decision.equalsIgnoreCase("codemaker")) {
                 input.add(0);
                 break;
-            } else if (decision.toLowerCase().equals("codebreaker")) {
+            } else if (decision.equalsIgnoreCase("codebreaker")) {
                 input.add(1);
                 break;
             } else {
-                System.out.println("Bad input. 'Codebreaker' or 'codemaker'?");
+                System.out.println("Wrong input. 'codebreaker' or 'codemaker'?");
             }
         }
         return input;
     }
 
+    /**
+     * Helper function for readGameSetupInput()
+     * @param text question that we ask the user
+     * @param input vector input where we store the users answer
+     */
     private void settingInput(String text, Vector<Integer> input) {
         while (true) {
             try {
@@ -39,13 +57,14 @@ public class MasterMindIO {
                 input.add(Integer.parseInt(s.nextLine()));
                 break;
             } catch (NumberFormatException e) {
-                System.out.println("Bad input");
+                System.out.println("Wrong input");
             }
         }
     }
 
     /**
-     * @return
+     * Get input from user to make a new guess
+     * @return input code of length $colorAmount
      */
     public Vector<Mastermind.COLOR> readAttemptInput() {
         Vector<Mastermind.COLOR> attempt = new Vector<>();
@@ -53,33 +72,45 @@ public class MasterMindIO {
         while (amountOfColorsGiven < Mastermind.$codeLength) {
             System.out.print("Give me a color for column: " + amountOfColorsGiven + "\n");
             String userInput = s.nextLine();
-            for (int colorIndex = 0; colorIndex < Mastermind.$colorAmount; colorIndex++) {
-                if (Mastermind.COLOR.valueOf(userInput.toUpperCase()) == Mastermind.getColor(colorIndex)) {
-                    attempt.add(Mastermind.COLOR.valueOf(userInput.toUpperCase()));
-                    amountOfColorsGiven++;
-                    break;
+            if (userInput instanceof String) {
+                for (int colorIndex = 0; colorIndex < Mastermind.$colorAmount; colorIndex++) {
+                    if (userInput.equalsIgnoreCase(Mastermind.getColor(colorIndex).toString())) {
+                        attempt.add(Mastermind.COLOR.valueOf(userInput.toUpperCase()));
+                        amountOfColorsGiven++;
+                        break;
+                    }
                 }
             }
         }
         return attempt;
     }
 
-    public void writePinsOutput(Vector<Integer> pins) {
+     /**
+     * Prints out the given amount of red and white pins
+     * @param pins vector with red and white pin count
+     */
+    public void writePinAmount(Vector<Integer> pins) {
         System.out.print("Number of red pins: " + pins.get(0) + ", number of white pins: " + pins.get(1) + "\n");
     }
 
-    public void writeUserVictoryOutput() {
-        System.out.print("Codebreaker has won!");
+    /**
+     * Prints out which player won and the attempts that have been used
+     * @param text the text to be printed
+     * @param attemptsUsed the number of attempts to be printed
+     */
+    public void writeVictory(String text, Integer attemptsUsed) {
+        System.out.print(text + " Attempts: " + attemptsUsed);
     }
 
-    public void writeComputerVictoryOutput() {
-        System.out.print("Codemaker has won. You ran out of attempts!");
-    }
-
-    public void writeAttemptOutput(Vector<Mastermind.COLOR> attempt) {
+    /**
+     *Prints out the current attempt
+     * @param attempt a vector of colors from the last attempt
+     */
+    public void writeCurrentAttempt(Vector<Mastermind.COLOR> attempt) {
         System.out.print("Attempt: ");
-        for (int i = 0; i < attempt.size(); i++) {
-            System.out.print(attempt.get(i) + " ");
+        for (Mastermind.COLOR color : attempt) {
+            System.out.print(color + " ");
         }
+        System.out.print("\n");
     }
 }

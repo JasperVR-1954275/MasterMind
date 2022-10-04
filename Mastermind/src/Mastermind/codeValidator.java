@@ -1,4 +1,65 @@
 package Mastermind;
 
-public class codeValidator {
+import java.util.Vector;
+
+/**
+ * Goes over code for pins based on
+ * color and position of code elements
+ * @author Group 2
+ */
+public class CodeValidator {
+    /**
+     * Check given code with keycode for red en white pins
+     * @param inputCode code to be checked given by codebreaker
+     * @pre non-empty vector inputCode
+     * @return vector with amount of red and white pins
+     */
+    public Vector<Integer> checkGivenCode(Vector<Mastermind.COLOR> inputCode) {
+        Vector<Integer> keyPins = new Vector<>();
+        Vector<Integer> redPos = calculateRedPins(inputCode);
+        int redPins = redPos.size();
+        int whitePins = calculateWhitePins(inputCode, redPos);
+        keyPins.add(redPins);// red pins
+        keyPins.add(whitePins);// white pins
+        return keyPins;
+    }
+
+    /**
+     * Check given code for occurrence of colors in keycode
+     * @param inputCode code to be checked given by codebreaker
+     * @param redPos positions where red pin was matched
+     * @pre non-empty vector inputCode
+     * @return the amount of white pins
+     */
+    public Integer calculateWhitePins(Vector<Mastermind.COLOR> inputCode, Vector<Integer> redPos) {
+        int whitePins = 0;
+        for (int x = 0; x < Mastermind.getInstance().getKeyCode().size(); x++) {
+            if (!redPos.contains(x)) {
+                for (int y = 0; y < Mastermind.getInstance().getKeyCode().size(); y++) {
+                    if (!redPos.contains(y) && Mastermind.getInstance().getKeyCode().get(y) == inputCode.get(x)) {
+                        whitePins++;
+                        break;
+                    }
+                }
+            }
+        }
+        return whitePins;
+    }
+
+
+    /**
+     * Check given code for match with color and position in keycode
+     * @param inputCode code to be checked given by codebreaker
+     * @pre non-empty vector inputCode
+     * @return the positions of the pins in inputcode and keycode that have the same color and position
+     */
+    public Vector<Integer> calculateRedPins(Vector<Mastermind.COLOR> inputCode) {
+        Vector<Integer> redPos = new Vector<>();
+        for (int i = 0; i < Mastermind.getInstance().getKeyCode().size(); i++) {
+            if (Mastermind.getInstance().getKeyCode().get(i) == inputCode.get(i)) {
+                redPos.add(i);
+            }
+        }
+        return redPos;
+    }
 }

@@ -5,17 +5,14 @@ import java.util.Vector;
 
 /**
  * This interface defines the method for the different computer strategies
- *
- *
+ * @author Group 2
  */
 public interface MasterStrategy {
-    /* Make a single move as maker or continues moves as breaker */
-
     /**
-     * Generate a random new row which can be used as computer maker row
+     * Generate a random new code which can be used as computer maker code
      * or a new guess from the computer breaker
-     * @return A row of length $codeLength where every element is a random color from Mastermind.COLOR
-     * @pre There is atleast one free row available to make a new random row
+     * @return A code of length $codeLength where every element is a random color from Mastermind.COLOR
+     * @pre There is atleast one free code available to make a new random code
      */
-    public Vector<Mastermind.COLOR> generateCode();
+    Vector<Mastermind.COLOR> generateCode();
 }
