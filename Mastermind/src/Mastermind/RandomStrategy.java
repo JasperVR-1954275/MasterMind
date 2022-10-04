@@ -14,12 +14,12 @@ class RandomStrategy implements MasterStrategy {
      * @return A code of length $codeLength where every element is a random color from Mastermind.COLOR
      * @pre There is atleast one free code available to make a new random code
      */
-    public Vector<Mastermind.COLOR> generateCode() {
-        Vector<Mastermind.COLOR> generatedCode = new Vector<>();
+    public Vector<MasterMindModel.COLOR> generateCode() {
+        Vector<MasterMindModel.COLOR> generatedCode = new Vector<>();
         int colorValue;
-        for (int i=0; i < Mastermind.$codeLength; i++){
-            colorValue = (int)(10 * Math.random()) % Mastermind.$colorAmount;
-            generatedCode.add(Mastermind.getColor(colorValue));
+        for (int i=0; i < MasterMindModel.$codeLength; i++){
+            colorValue = (int)(10 * Math.random()) % MasterMindModel.$colorAmount;
+            generatedCode.add(MasterMindModel.getColor(colorValue));
         }
         return generatedCode;
     }

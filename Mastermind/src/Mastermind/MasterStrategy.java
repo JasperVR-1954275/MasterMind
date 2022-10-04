@@ -14,5 +14,5 @@ public interface MasterStrategy {
      * @return A code of length $codeLength where every element is a random color from Mastermind.COLOR
      * @pre There is atleast one free code available to make a new random code
      */
-    Vector<Mastermind.COLOR> generateCode();
+    Vector<MasterMindModel.COLOR> generateCode();
 }

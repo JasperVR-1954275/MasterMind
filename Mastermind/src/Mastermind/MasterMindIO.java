@@ -66,16 +66,16 @@ public class MasterMindIO {
      * Get input from user to make a new guess
      * @return input code of length $colorAmount
      */
-    public Vector<Mastermind.COLOR> readAttemptInput() {
-        Vector<Mastermind.COLOR> attempt = new Vector<>();
+    public Vector<MasterMindModel.COLOR> readAttemptInput() {
+        Vector<MasterMindModel.COLOR> attempt = new Vector<>();
         int amountOfColorsGiven = 0;
-        while (amountOfColorsGiven < Mastermind.$codeLength) {
+        while (amountOfColorsGiven < MasterMindModel.$codeLength) {
             System.out.print("Give me a color for column: " + amountOfColorsGiven + "\n");
             String userInput = s.nextLine();
             if (userInput instanceof String) {
-                for (int colorIndex = 0; colorIndex < Mastermind.$colorAmount; colorIndex++) {
-                    if (userInput.equalsIgnoreCase(Mastermind.getColor(colorIndex).toString())) {
-                        attempt.add(Mastermind.COLOR.valueOf(userInput.toUpperCase()));
+                for (int colorIndex = 0; colorIndex < MasterMindModel.$colorAmount; colorIndex++) {
+                    if (userInput.equalsIgnoreCase(MasterMindModel.getColor(colorIndex).toString())) {
+                        attempt.add(MasterMindModel.COLOR.valueOf(userInput.toUpperCase()));
                         amountOfColorsGiven++;
                         break;
                     }
@@ -106,9 +106,9 @@ public class MasterMindIO {
      *Prints out the current attempt
      * @param attempt a vector of colors from the last attempt
      */
-    public void writeCurrentAttempt(Vector<Mastermind.COLOR> attempt) {
+    public void writeCurrentAttempt(Vector<MasterMindModel.COLOR> attempt) {
         System.out.print("Attempt: ");
-        for (Mastermind.COLOR color : attempt) {
+        for (MasterMindModel.COLOR color : attempt) {
             System.out.print(color + " ");
         }
         System.out.print("\n");

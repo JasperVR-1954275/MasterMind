@@ -14,7 +14,7 @@ public class CodeValidator {
      * @pre non-empty vector inputCode
      * @return vector with amount of red and white pins
      */
-    public Vector<Integer> checkGivenCode(Vector<Mastermind.COLOR> inputCode) {
+    public Vector<Integer> checkGivenCode(Vector<MasterMindModel.COLOR> inputCode) {
         Vector<Integer> keyPins = new Vector<>();
         Vector<Integer> redPos = calculateRedPins(inputCode);
         int redPins = redPos.size();
@@ -31,12 +31,12 @@ public class CodeValidator {
      * @pre non-empty vector inputCode
      * @return the amount of white pins
      */
-    public Integer calculateWhitePins(Vector<Mastermind.COLOR> inputCode, Vector<Integer> redPos) {
+    public Integer calculateWhitePins(Vector<MasterMindModel.COLOR> inputCode, Vector<Integer> redPos) {
         int whitePins = 0;
-        for (int x = 0; x < Mastermind.getInstance().getKeyCode().size(); x++) {
+        for (int x = 0; x < MasterMindModel.getKeyCode().size(); x++) {
             if (!redPos.contains(x)) {
-                for (int y = 0; y < Mastermind.getInstance().getKeyCode().size(); y++) {
-                    if (!redPos.contains(y) && Mastermind.getInstance().getKeyCode().get(y) == inputCode.get(x)) {
+                for (int y = 0; y < MasterMindModel.getKeyCode().size(); y++) {
+                    if (!redPos.contains(y) && MasterMindModel.getKeyCode().get(y) == inputCode.get(x)) {
                         whitePins++;
                         break;
                     }
@@ -53,10 +53,10 @@ public class CodeValidator {
      * @pre non-empty vector inputCode
      * @return the positions of the pins in inputcode and keycode that have the same color and position
      */
-    public Vector<Integer> calculateRedPins(Vector<Mastermind.COLOR> inputCode) {
+    public Vector<Integer> calculateRedPins(Vector<MasterMindModel.COLOR> inputCode) {
         Vector<Integer> redPos = new Vector<>();
-        for (int i = 0; i < Mastermind.getInstance().getKeyCode().size(); i++) {
-            if (Mastermind.getInstance().getKeyCode().get(i) == inputCode.get(i)) {
+        for (int i = 0; i < MasterMindModel.getKeyCode().size(); i++) {
+            if (MasterMindModel.getKeyCode().get(i) == inputCode.get(i)) {
                 redPos.add(i);
             }
         }
